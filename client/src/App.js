@@ -11,13 +11,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Components 
 import Home from './components/Home/Home';
-import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import Airlines from './components/View/Airlines';
 import Airports from './components/View/Airports';
-import Passengers from './components/View/Passengers';
 import Flights from './components/View/Flights';
-import Data from './components/View/Data';
+import RiskData from './components/View/RiskData';
+import Registration from './components/Registration/UserRegister';
+import Login from './components/Login/Login';
 
 function App() {
   return (
@@ -30,9 +30,10 @@ function App() {
             <Route path="/" exact component={Home} />
             <Route path="/Airlines" exact component={Airlines} />
             <Route path="/Airports" exact component={Airports} />
-            <Route path="/Passengers" exact component={Passengers} />
             <Route path="/Flights" exact component={Flights} />
-            <Route path="/Data" exact component={Data} />
+            <Route path="/RiskData" exact component={RiskData} />
+            <Route path="/Login" exact component={Login} />
+            <Route path="/Registration" exact component={Registration} />
             <Route path='*' exact={true} component={Home} />
           </Switch>
         </div>

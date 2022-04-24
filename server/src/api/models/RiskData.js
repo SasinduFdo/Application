@@ -36,9 +36,30 @@ const riskDataSchema = new Schema(
       required: true,
       trim: true,
     },
-    riskFactors: {
-      type: Array,
+    riskDataTerrorism: {
+      type: String,
       required: true,
+      trim: true,
+    },
+    riskDataNarcotics: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    riskDataSmuggling: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    riskDataImmigration: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    riskDataRevenue: {
+      type: String,
+      required: true,
+      trim: true,
     },
   },
   {

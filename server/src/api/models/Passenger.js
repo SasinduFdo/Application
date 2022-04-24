@@ -22,20 +22,20 @@ const passengerSchema = new Schema(
       trim: true,
     },
     passengerFamilyName: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      passengerPassportNumber: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      passengerCountry: {
-        type: String,
-        required: true,
-        trim: true,
-      }
+      type: String,
+      required: true,
+      trim: true,
+    },
+    passengerPassportNumber: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    passengerCountry: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

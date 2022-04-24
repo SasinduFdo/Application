@@ -16,11 +16,31 @@ const flightSchema = new Schema(
       required: true,
       trim: true,
     },
-    airlineCountry: {
+    flightArrival: {
       type: String,
       required: true,
       trim: true,
     },
+    flightTerminal: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    flightAircraft: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    flightCapacity: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    flightCrewNumber: {
+      type: String,
+      required: true,
+      trim: true,
+    }
   },
   {
     timestamps: true,

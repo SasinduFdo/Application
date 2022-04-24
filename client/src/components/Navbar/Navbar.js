@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button } from "./Button";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import "./sidebar.scss";
-
-
+import {Button} from "./Button";
 // List of the side menu items
 const sidebarNavItems = [
   {
@@ -32,70 +30,21 @@ const sidebarNavItems = [
     section: "Flights",
   },
   {
-    display: "Passengers",
+    display: "Risk data",
     icon: <i className="bx bx-receipt"></i>,
-    to: "/Passengers",
-    section: "Passengers",
+    to: "/RiskData",
+    section: "RiskData",
   },
   {
-    display: "Airport risk data",
+    display: "Register New User",
     icon: <i className="bx bx-receipt"></i>,
-    to: "/AirportRisk",
-    section: "AirportRisk",
-  },
-  {
-    display: "Terminal risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/TerminalRisk",
-    section: "TerminalRisk",
-  },
-  {
-    display: "Flight risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/FlightRisk",
-    section: "FlightRisk",
-  },
-  {
-    display: "Passenger risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/PassengerRisk",
-    section: "PassengerRisk",
-  },
-  {
-    display: "Terrorism risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/TerrorismRisk",
-    section: "TerrorismRisk",
-  },
-  {
-    display: "Narcotics risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/NarcoticsRisk",
-    section: "NarcoticsRisk",
-  },
-  {
-    display: "Smuggling risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/SmugglingRisk",
-    section: "SmugglingRisk",
-  },
-  {
-    display: "Immigration risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/ImmigrationRisk",
-    section: "ImmigrationRisk",
-  },
-  {
-    display: "Revenue risk data",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/RevenueRisk",
-    section: "RevenueRisk",
+    to: "/Registration",
+    section: "Registration",
   },
 ];
 
 function Navbar() {
-
-  //List of variables/hooks used in the component 
+  //List of variables/hooks used in the component
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
@@ -107,6 +56,7 @@ function Navbar() {
   const sidebarRef = useRef();
   const indicatorRef = useRef();
   const location = useLocation();
+  const [log, setLog] = useState(false);
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -116,9 +66,11 @@ function Navbar() {
     }
   };
 
-
   // Function activates when components starts
   useEffect(() => {
+    if ("Logged" === localStorage.getItem("login")) {
+      setLog(true);
+    }
     setTimeout(() => {
       const sidebarItem = sidebarRef.current.querySelector(
         ".sidebar__menu__item"
@@ -137,72 +89,82 @@ function Navbar() {
     setActiveIndex(curPath.length === 0 ? 0 : activeItem);
   }, [location]);
 
-
-    // Function activates when components starts
+  // Function activates when components starts
   useEffect(() => {
     showButton();
   }, []);
 
+  const logOut = async ()  => {
+    await window.localStorage.clear();
+    window.location.reload();
+  };
 
-  // Resize the buttons when the window size changes 
+  // Resize the buttons when the window size changes
   window.addEventListener("resize", showButton);
 
   return (
     <>
-
-    {/* Rending the navbar on top */}
-      <nav className="navbar">
-        <div className="navbar-container">
-          <Link
-            to="/"
-            className="navbar-logo"
-            style={{
-              marginTop: 0,
-              width: 500,
-              fontFamily: "Oswald, sans-serif",
-            }}
-            onClick={closeMobileMenu}
-          >
-            GreenLine Systems
-            <i class="fab fa-typo3" />
+      {log ? (
+        <>
+          <nav className='navbar'>
+        <div className='navbar-container'>
+          <Link to='/' className='navbar-logo' style={{marginTop:0,width:500,fontFamily:"Oswald, sans-serif"}} onClick={closeMobileMenu}>
+            Greenline Systems
+            <i class='fab fa-typo3' />
           </Link>
-          <div className="menu-icon" onClick={handleClick}>
-            <i className={click ? "fas fa-times" : "fas fa-bars"} />
+          <div className='menu-icon' onClick={handleClick}>
+            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
           </div>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <li className='nav-item'>
+              <Link
+                className='nav-links-mobile'
+                onClick={closeMobileMenu && logOut}
+              >
+                LOGOUT
+              </Link>
+            </li>
+
+            <li className='nav-item' style={{marginTop:12}}>
+            <span >{button && <Button style={{fontFamily:"'Bebas Neue', cursive",fontSize:25}}  buttonStyle='btn--outline' onClick={logOut}>LOGOUT</Button>}</span>
+            </li>
+            
+          </ul>
         </div>
       </nav>
-      
 
-      {/* rendering the side menu */}
-      <div className='sidebar'>  
-      <br/>
-        <div className="sidebar__logo">
-            Animate
-        </div>
-        <div ref={sidebarRef} className="sidebar__menu">
-            <div
+          {/* rendering the side menu */}
+          <div className="sidebar">
+            <br />
+            <div className="sidebar__logo">Animate</div>
+            <div ref={sidebarRef} className="sidebar__menu">
+              <div
                 ref={indicatorRef}
                 className="sidebar__menu__indicator"
                 style={{
-                    transform: `translateX(-50%) translateY(${activeIndex * stepHeight}px)`
+                  transform: `translateX(-50%) translateY(${
+                    activeIndex * stepHeight
+                  }px)`,
                 }}
-            ></div>
-            {
-                sidebarNavItems.map((item, index) => (
-                    <Link to={item.to} key={index}>
-                        <div className={`sidebar__menu__item ${activeIndex === index ? 'active' : ''}`}>
-                            <div className="sidebar__menu__item__icon">
-                                {item.icon}
-                            </div>
-                            <div className="sidebar__menu__item__text">
-                                {item.display}
-                            </div>
-                        </div>
-                    </Link>
-                ))
-            }
-        </div>
-    </div>
+              ></div>
+              {sidebarNavItems.map((item, index) => (
+                <Link to={item.to} key={index}>
+                  <div
+                    className={`sidebar__menu__item ${
+                      activeIndex === index ? "active" : ""
+                    }`}
+                  >
+                    <div className="sidebar__menu__item__icon">{item.icon}</div>
+                    <div className="sidebar__menu__item__text">
+                      {item.display}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : null}
     </>
   );
 }
