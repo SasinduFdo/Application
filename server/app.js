@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const mongoose = require('mongoose');
-
+var cors = require('cors')
 //Connecting to the database
 require("dotenv").config();
 const uri = process.env.ATLAS_URI;
@@ -28,20 +28,19 @@ app.use(bodyParser.json());
 
 
 //API Origin access - Adding the response e headers so the client browser will not throw any origin access errors                                              
-app.use((req, res, next) =>
-{
-    res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Header',
-    'Origin , X-Requested, Content-Type, Accept, Authorization');
-
-    if(req.method === 'OPTIONS')
-    {
-        res.header('Access-Control-Allow-Methods','PUT, POST, PATCH, DELETE, GET');
-        return res.status(200).json({});
-    }
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+    );
+  
+    app.use(cors({ credentials: true, origin: true }));
     next();
-});
-
+  });
+  app.options('*', cors());
 //Importing the routes 
 const MainRoute = require("./src/api/routes/mainRoutes")
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-
+import Authentication from "../../services/Authentication";
 const Airports = () => {
   let history = useHistory();
   const [airports, setAirports] = useState([]);
@@ -49,7 +49,7 @@ const Airports = () => {
   const getAirportList = async () => {
     // Sending the request to get the airport data
     await axios
-      .get(process.env.REACT_APP_API_URL+"viewAirport")
+      .get(process.env.REACT_APP_API_URL+"viewAirport", { headers: Authentication() })
       .then((response) => {
         if (response.status !== 500) {
           setAirports(response.data);

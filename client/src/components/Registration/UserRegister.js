@@ -13,6 +13,7 @@ import "./Registration.css";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button, Alert } from "react-bootstrap";
+import Authentication from "../../services/Authentication";
 const regexp = /^(\w+\S+)$/;
 
 const UserRegister = () => {
@@ -37,7 +38,7 @@ const UserRegister = () => {
       formData.append("password",password);
 
       await axios
-        .post(process.env.REACT_APP_API_URL + "register", formData)
+        .post(process.env.REACT_APP_API_URL + "register", formData, { headers: Authentication() })
         .then((response) => {
           console.log(response.data);
           if (response.status === 200 && response.data.message === "saved") {
@@ -45,7 +46,15 @@ const UserRegister = () => {
             setUsername("");
             setPassword("");
             setMessage("Account Created Successfully.");
-          } else if (response.data.message === "error") {
+          }
+          else if(response.status === 200 && response.data.message === "username taken")
+          {
+            setLoad(false);
+            setUsername("");
+            setPassword("");
+            setError("Username already taken!!");
+          } 
+          else if (response.data.message === "error") {
             setLoad(false);
             setUsername("");
             setPassword("");

@@ -25,7 +25,7 @@ const Home = () => {
         <Card.Body>
           <Card.Title style={{color:"black",fontSize:"30px"}}>Welcome to Greenline System</Card.Title>
           <Card.Subtitle className="mb-2 text-muted" style={{fontSize:"23px"}}>
-          A risk management solution that asses the risk of aircraft, crew, cargo and travelers.
+          A risk management solution assesses the risk of aircrafts, crew, cargo and travellers
           </Card.Subtitle>
           <Card.Text style={{fontSize:"17px",color:"black"}}>
             We provide our customers with the capability to improve

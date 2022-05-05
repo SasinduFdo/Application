@@ -2,17 +2,15 @@ import React, { useState, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import Authentication from "../../services/Authentication";
 
 const Airlines = () => {
   let history = useHistory();
   const [airlines, setAirlines] = useState([]);
 
-
-
-  if ("Logged" !== (localStorage.getItem('login'))) {
-    history.push('/Login');
-}
-
+  if ("Logged" !== localStorage.getItem("login")) {
+    history.push("/Login");
+  }
 
   const data = {
     columns: [
@@ -44,11 +42,20 @@ const Airlines = () => {
 
   const getAirlineList = async () => {
     // Sending the request to get the airline data
+
+    console.log(Authentication());
     await axios
-      .get(process.env.REACT_APP_API_URL + "viewAirline")
+      .get(process.env.REACT_APP_API_URL + "viewAirline", { headers: Authentication() })
       .then((response) => {
-        if (response.status !== 500) {
+        if(response.data.message === "login")
+        {
+          history.push("/Login");
+        }
+        else if (response.status !== 500 ) {
+          console.log(response.data.message);
           setAirlines(response.data);
+        } else {
+          history.push("/Login");
         }
       });
   };

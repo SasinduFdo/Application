@@ -3,7 +3,7 @@ import { MDBDataTable, MDBBtn, MDBDataTableV5 } from "mdbreact";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-
+import Authentication from "../../services/Authentication";
 const Flights = () => {
   let history = useHistory();
   const [flights, setFlights] = useState([]);
@@ -66,7 +66,7 @@ const Flights = () => {
     await axios
       .get(
         process.env.REACT_APP_API_URL+"viewPassengersByFlight?id=" +
-          e.flightNumber
+          e.flightNumber, { headers: Authentication() }
       )
       .then((response) => {
         if (response.status !== 500 && response.message !== "Login") {
@@ -88,7 +88,7 @@ const Flights = () => {
   const getFlightList = async () => {
     // Sending the request to get the flight data
     await axios
-      .get(process.env.REACT_APP_API_URL+"viewFlight")
+      .get(process.env.REACT_APP_API_URL+"viewFlight", { headers: Authentication() })
       .then((response) => {
         if (response.status !== 500) {
           setFlights(response.data);

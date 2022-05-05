@@ -116,7 +116,6 @@ exports.get_passengers_by_flight = (req, res, next) => {
 //get Risk Data
 exports.get_risk_data = async (req, res, next) => {
   try {
-    if (req.body._id !== null) {
       let NewRiskDataModelList = [];
 
       //creating the new risk data model
@@ -210,7 +209,7 @@ exports.get_risk_data = async (req, res, next) => {
       }
 
       res.status(200).json(NewRiskDataModelList);
-    }
+    
   } catch (err) {
     console.log(err.message);
     res.status(500).json({
@@ -221,34 +220,56 @@ exports.get_risk_data = async (req, res, next) => {
 
 exports.register_user = (req, res, next) => {
   console.log(req.body);
-  bcrypt.hash(req.body.password, 10, (err, hash) => {
-    if (err) {
-      console.log(err.message);
-      res.status(500).json({
-        message: "error",
-      });
-    } else {
-      //creating an user object
-      let user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        username: req.body.username,
-        password: hash,
-      });
-      //saving the user
-      user
-        .save()
-        .then((result) => {
-          console.log(result);
-          res.status(200).json({ message: "saved" });
-        })
-        .catch((err) => {
-          console.log(err.message);
-          res.status(500).json({
-            message: "error",
+
+   User.find({ username: req.body.username })
+      .exec()
+      .then((user) => {
+        if (user.length == 0) {
+          bcrypt.hash(req.body.password, 10, (err, hash) => {
+            if (err) {
+              console.log(err.message);
+              res.status(500).json({
+                message: "error",
+              });
+            } else {
+              //creating an user object
+              let user = new User({
+                _id: new mongoose.Types.ObjectId(),
+                username: req.body.username,
+                password: hash,
+              });
+              //saving the user
+              user
+                .save()
+                .then((result) => {
+                  console.log(result);
+                  res.status(200).json({ message: "saved" });
+                })
+                .catch((err) => {
+                  console.log(err.message);
+                  res.status(500).json({
+                    message: "error",
+                  });
+                });
+            }
           });
+        }
+        if (user.length == 1) {
+          res.status(200).json({
+            message: "username taken",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).json({
+          message: "error",
         });
-    }
-  });
+      });
+
+
+  
+
 };
 
 exports.login = async (req, res, next) => {

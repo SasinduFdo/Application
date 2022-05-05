@@ -21,7 +21,7 @@ import {
   BarElement,
 } from "chart.js";
 import { Radar, Bar } from "react-chartjs-2";
-
+import Authentication from "../../services/Authentication";
 ChartJS.register(
   RadialLinearScale,
   PointElement,
@@ -72,7 +72,7 @@ const Terminal = () => {
   const getRiskData = async () => {
     // Sending the request to get the risk data
     await axios
-      .get(process.env.REACT_APP_API_URL+"viewRiskData")
+      .get(process.env.REACT_APP_API_URL+"viewRiskData", { headers: Authentication() })
       .then((response) => {
         if (response.status !== 500) {
           setRiskData(response.data);
@@ -108,9 +108,9 @@ const Terminal = () => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {viewRisk !== "" ? (
+          {viewRisk != "" ? (
             <>
-              <MDBContainer style={{ width: "100%" }}>
+              <div style={{ width: "100%" }}>
                 <MDBRow style={{ width: "100%" }}>
                   <MDBCol style={{ width: "50%" }}>
                     <ListGroup as="ol" numbered>
@@ -215,13 +215,36 @@ const Terminal = () => {
                       </ListGroup.Item>
                     </ListGroup>
                   </MDBCol>
+
+
                   <MDBCol style={{ width: "50%" }}>
                     Risk Data
+                    <br/>
+                    <Table striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th>Terrorism %</th>
+                            <th>Narcotics %</th>
+                            <th>Smuggling %</th>
+                            <th>Immigration %</th>
+                            <th>Revenue %</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{viewRisk.riskModelRiskData.riskDataTerrorism}</td>
+                            <td>{viewRisk.riskModelRiskData.riskDataNarcotics}</td>
+                            <td>{viewRisk.riskModelRiskData.riskDataSmuggling}</td>
+                            <td>{viewRisk.riskModelRiskData.riskDataImmigration}</td>
+                            <td>{viewRisk.riskModelRiskData.riskDataRevenue}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
                     <Radar data={riskChart} options={{ responsive: true }} />
                     <Bar data={riskChart} options={{ responsive: true }} />
                   </MDBCol>
                 </MDBRow>
-              </MDBContainer>
+              </div>
             </>
           ) : null}
         </Modal.Body>
