@@ -279,6 +279,7 @@ exports.login = async (req, res, next) => {
       .exec()
       .then((user) => {
         if (user.length == 0) {
+          console.log("invalid");
           res.status(500).json({
             message: "invalid",
           });
@@ -287,6 +288,7 @@ exports.login = async (req, res, next) => {
         if (user.length == 1) {
           bcrypt.compare(req.body.password, user[0].password, (err, result) => {
             if (err) {
+              console.log(err);
               res.status(500).json({
                 message: "error",
               });
@@ -309,6 +311,7 @@ exports.login = async (req, res, next) => {
                 accessToken: token,
               });
             } else if (!result) {
+              console.log("invalid");
               res.status(500).json({
                 message: "invalid",
               });

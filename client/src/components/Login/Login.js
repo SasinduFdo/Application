@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBAlert } from 'mdbreact';
+import { MDBCard, MDBCardBody, MDBInput } from 'mdbreact';
 import axios from "axios";
 import { Button, Alert } from "react-bootstrap";
 import "./Login.css";
 import { useHistory } from "react-router-dom";
-import { Link } from 'react-router-dom';
 
 const Login = () => {
     let history = useHistory();

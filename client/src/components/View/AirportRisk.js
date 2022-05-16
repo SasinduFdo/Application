@@ -7,6 +7,7 @@ import {
   Table,
   Spinner,
   ListGroup,
+  Alert
 } from "react-bootstrap";
 import axios from "axios";
 import {
@@ -43,8 +44,11 @@ const AirportRisk = () => {
   const [showRisk, setShowRisk] = useState(false);
   const [viewRisk, setViewRisk] = useState("");
   const [riskChart, setRiskChart] = useState("");
+  const [error, setError] = useState("");
+
 
   useEffect(() => {
+    setError("");
     getRiskData();
     setShowAirr(true);
     setShowRisk(false);
@@ -92,6 +96,10 @@ const AirportRisk = () => {
       .then((response) => {
         if (response.status !== 500) {
           setRiskData(response.data);
+        }
+        else
+        {
+          setError("An Error Occurred!!.\nPlease Try Again.")
         }
       });
   };
@@ -285,7 +293,7 @@ const AirportRisk = () => {
       </div>
 
       <br />
-
+      <div>{error !== "" ? <Alert variant="danger">{error}</Alert> : ''}</div>
       {showAirr ? (
         <div
           style={{

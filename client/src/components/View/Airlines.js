@@ -3,11 +3,14 @@ import { MDBDataTable } from "mdbreact";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Authentication from "../../services/Authentication";
+import {  Alert } from "react-bootstrap";
 
 const Airlines = () => {
   let history = useHistory();
   const [airlines, setAirlines] = useState([]);
+  const [error, setError] = useState("");
 
+  
   if ("Logged" !== localStorage.getItem("login")) {
     history.push("/Login");
   }
@@ -37,12 +40,13 @@ const Airlines = () => {
   };
 
   useEffect(() => {
+    
     getAirlineList();
   }, []);
 
   const getAirlineList = async () => {
     // Sending the request to get the airline data
-
+    setError("");
     console.log(Authentication());
     await axios
       .get(process.env.REACT_APP_API_URL + "viewAirline", { headers: Authentication() })
@@ -54,8 +58,8 @@ const Airlines = () => {
         else if (response.status !== 500 ) {
           console.log(response.data.message);
           setAirlines(response.data);
-        } else {
-          history.push("/Login");
+        } else{
+          setError("An Error Occurred!!.\nPlease Try Again.")
         }
       });
   };
@@ -63,6 +67,7 @@ const Airlines = () => {
   return (
     <div style={{ width: "80%", margin: "0 auto", marginLeft: "340px" }}>
       <br />
+      <div>{error !== "" ? <Alert variant="danger">{error}</Alert> : ''}</div>
       <div style={{ textAlign: "left" }}>
         <MDBDataTable
           style={{
